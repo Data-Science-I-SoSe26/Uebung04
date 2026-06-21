@@ -1,44 +1,45 @@
-def ASSIGNMENT(new_list, i, old_list, j):
-    new_list[i] = old_list[j]
-
-
-def mergeSort(list_to_sort_by_merge):
-    if (
-        len(list_to_sort_by_merge) > 1
-        and not len(list_to_sort_by_merge) < 1
-        and len(list_to_sort_by_merge) != 0
-    ):
-        mid = len(list_to_sort_by_merge) // 2
-        left = list_to_sort_by_merge[:mid]
-        right = list_to_sort_by_merge[mid:]
-
-        mergeSort(left)
-        mergeSort(right)
+def merge_sort(list_to_sort):
+    """ Die Funktion merge_sort nimmt eine Liste als Argument und sortiert sie mit dem merge sort Algorithmus.
+    
+    Input: Liste mit Integern
+    """
+    
+    # Listen der Länge eins sind sortiert
+    if len(list_to_sort) > 1:
+        # Teilt die Liste in zwei möglichst gleichgroße Listen auf.
+        mid = len(list_to_sort) // 2
+        left = list_to_sort[:mid]
+        right = list_to_sort[mid:]
+        
+        # Sortiert die Listen rekursiv mit merge_sort
+        merge_sort(left)
+        merge_sort(right)
 
         l = 0
         r = 0
         i = 0
-
+        
+        # Fügt die sortierten Listen "left" und "right" zu einer gesamten sortierten Liste zusammen
         while l < len(left) and r < len(right):
+            # fügt den kleineren der beiden Werte der sortierten Liste hinzu
             if left[l] <= right[r]:
-                ASSIGNMENT(new_list=list_to_sort_by_merge, i=i, old_list=left, j=l)
+                list_to_sort[i] = left[l]
                 l += 1
             else:
-                ASSIGNMENT(new_list=list_to_sort_by_merge, i=i, old_list=right, j=r)
+                list_to_sort[i] = right[r]
                 r += 1
             i += 1
+        
 
-        while l < len(left):
-            list_to_sort_by_merge[i] = left[l]
-            l += 1
-            i += 1
-
-        while r < len(right):
-            list_to_sort_by_merge[i] = right[r]
-            r += 1
-            i += 1
-
-
+        # An diesem Punkt ist nur eine der Listen "left" und "right" nicht leer.
+        # Daher fügen wir den Rest dieser Liste an die gemeinsame Liste an.
+        if l < len(left):
+            list_to_sort[i:] = left[l:]
+            
+        if r < len(right):
+            list_to_sort[i:] = right[r:]
+            
+            
 import matplotlib.pyplot as plt
 
 my_list = [54, 26, 93, 17, 77, 31, 44, 55, 20]
@@ -49,7 +50,7 @@ ax1.bar(x, my_list)
 ax1.set_xlabel("Index")
 ax1.set_ylabel("Wert")
 
-mergeSort(my_list)
+merge_sort(my_list)
 
 ax2.set_title("Sortierte Liste")
 ax2.bar(x, my_list)
